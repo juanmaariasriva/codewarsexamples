@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public static class Kata
+{
+  public static int Score(int[] dice) {
+    // Fill me in!
+    int response = 0;
+    List<Rule> rules = new List<Rule>();
+    Rule rule1 = new Rule{ valueDice = 1, limit = 3, points = 1000 };
+    rules.Add(rule1);
+    Rule rule2 = new Rule{ valueDice = 6, limit = 3, points = 600 };
+    rules.Add(rule2);
+    Rule rule3 = new Rule{ valueDice = 5, limit = 3, points = 500 };
+    rules.Add(rule3);
+    Rule rule4 = new Rule{ valueDice = 4, limit = 3, points = 400 };
+    rules.Add(rule4);
+    Rule rule5 = new Rule{ valueDice = 3, limit = 3, points = 300 };
+    rules.Add(rule5);
+    Rule rule6 = new Rule{ valueDice = 2, limit = 3, points = 200 };
+    rules.Add(rule6);
+    Rule rule7 = new Rule{ valueDice = 1, limit = 1, points = 100 };
+    rules.Add(rule7);
+    Rule rule8 = new Rule{ valueDice = 5, limit = 1, points = 50 };
+    rules.Add(rule8);
+    var newDice = dice.ToList();
+    foreach(Rule rule in rules){
+      newDice = rule.process(newDice);
+      response = response + rule.totalPoints;
+    }
+    Console.WriteLine("No of elelemts: " + response);
+    return response;
+  }
+}
+
+class Rule
+{
+  public int valueDice { get; set; }
+  public int limit { get; set; }
+  public int points { get; set; }
+  public int totalPoints { get; set; }
+  
+  public List<int> process(List<int> dice){
+    var count  = 0;
+    var ruleNewList = new List<int>();    
+    var oldList = new List<int>();
+    foreach(int i in dice){
+      if(i == valueDice){
+        count++;
+        ruleNewList.Add(i);
+      }else{
+        oldList.Add(i);
+      }
+      if(count == limit){
+        count = 0;
+        ruleNewList.Clear();
+        totalPoints = totalPoints + points;
+      }
+    }
+    oldList.AddRange(ruleNewList);
+    return oldList;
+  }
+}
